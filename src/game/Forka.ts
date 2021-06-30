@@ -1,15 +1,27 @@
 import { GameState } from "./types/GameState";
+import { GameStateResponse } from "./types/GameStateResponse";
+import LetterGuessService from "./LetterGuessService";
+
+const emptyGamePublic = {
+  length: 0,
+  word: [],
+  wrongGuesses: [],
+  gameResult: false,
+};
 
 export default class Forka {
+  private letterGuessService: LetterGuessService;
   public state: GameState;
 
   constructor() {
+    this.letterGuessService = new LetterGuessService();
     this.state = {
       selectedWord: "",
       public: {
         length: 0,
         word: [],
-        result: false,
+        wrongGuesses: [],
+        gameResult: false,
       },
     };
   }
@@ -20,43 +32,62 @@ export default class Forka {
     this.state.selectedWord = selectedWord;
     this.state.public.length = len;
     this.state.public.word = new Array<string>(len);
+    this.state.public.wrongGuesses = [];
+    this.state.public.gameResult = false;
 
     return this.state.public;
   }
 
-  guessLetter(letter: string) {
+  isGameInitialized(): boolean {
+    return this.state.selectedWord.length === 0;
+  }
+
+  guessLetter(letter: string): GameStateResponse {
     console.log(
       `Guessing letter [${letter}] of selected word [${this.state.selectedWord}]`
     );
-    // TODO how to treat error of game not initialized???
-    if (this.state.selectedWord.length === 0) {
-      return {};
+
+    if (this.isGameInitialized()) {
+      return {
+        ...{
+          length: 0,
+          word: [],
+          wrongGuesses: [],
+          gameResult: false,
+        },
+        actionResult: false,
+      };
     }
-    const indexesFound = this.getIndexesOf(letter, this.state.selectedWord);
+
+    if (
+      this.letterGuessService.isDuplicatedLetterGuess(letter, this.state.public)
+    ) {
+      return { ...this.state.public, actionResult: null };
+    }
+
+    const indexesFound = this.letterGuessService.findLetter(
+      letter,
+      this.state.selectedWord
+    );
+    const actionResult = indexesFound.length > 0 ? true : false;
+
+    actionResult
+      ? this.letterGuessService.updateLetterFound(
+          indexesFound,
+          this.state.public,
+          letter
+        )
+      : this.letterGuessService.updateWrongGuess(this.state.public, letter);
 
     indexesFound.forEach((item) => {
       this.state.public.word[item] = letter;
     });
 
-    const lettersFound = this.state.public.word.filter(
-      (item) => item.length > 0
-    ).length;
+    this.state.public.gameResult = this.letterGuessService.isAllLettersFound(
+      this.state.public.word,
+      this.state.public.length
+    );
 
-    this.state.public.result = lettersFound === this.state.public.length;
-    return this.state.public;
-  }
-
-  private getIndexesOf(search: string, word: string) {
-    let startIndex = 0,
-      index,
-      indexes = [];
-
-    while ((index = word.indexOf(search, startIndex)) > -1) {
-      indexes.push(index);
-      startIndex = index + 1;
-    }
-
-    console.log(`Indexes found: ${indexes}`);
-    return indexes;
+    return { ...this.state.public, actionResult: actionResult };
   }
 }

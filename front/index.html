@@ -3,36 +3,10 @@
     <meta charset="utf-8">
     <title>ForKa</title>
     <link rel="stylesheet" href="style.css">
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
     
-    <script type="module">
-      const wordLength = 6;
-      const word = [
-        "b",
-        "a",
-        "n",
-        "a",
-        "n",
-        "a"
-      ];
-
-      const gameWord = document.getElementById("game-word");
-
-      for (let i = 0; i < wordLength; i++) {
-        gameWord.innerHTML += `<p id="game-letter-${i}" class="game-letter">_</p>`;
-      }
-
-      setTimeout(() => {
-        for (var i = 0; i < word.length; i++) {
-          document.getElementById(`game-letter-${i}`).textContent = word[i];
-        }
-      }, 2000)
-
-      setTimeout(() => {
-        const wrongGuesses = document.getElementById("wrong-guesses");
-        wrongGuesses.innerHTML += `<p id="wrong-letter-0" class="game-letter">z</p>`;
-        wrongGuesses.innerHTML += `<p id="wrong-letter-1" class="game-letter">p</p>`;
-      }, 3000)
-    </script>
+    <script type="module" src="game.js"></script>
   </head>
   <body>
     <div id="game">
@@ -48,6 +22,20 @@
         <span id="wrong-label">Wrong guesses:</span>
         <div id="wrong-guesses" class="contaier-margin">
           <!-- Dynamically inserted via game -->
+        </div>
+      </div>
+      <div id="game-status-container">
+        <span id="game-status-result">Loading...</span>
+      </div>
+      <div id="actions-container">
+        <h3>Actions:</h3>
+        <div id="guess-letter-container">
+          <input id="guess-letter-text" type="text" />
+          <button id="guess-letter-btn">Guess Letter</button>
+        </div>
+        <div id="new-game-container">
+          <input id="new-game-text" type="text" />
+          <button id="new-game-btn">New Game</button>
         </div>
       </div>
     </div>
