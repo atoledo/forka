@@ -12,19 +12,21 @@ socket.on('connect', () => {
 });
 
 socket.on('setup', (state) => {  
-  console.log(`setup: ${state}`);
+  console.log(state);
 
   setupWord(state.length);
   updateWrongGuesses(state.wrongGuesses);
-  checkGameComplete(state.gameResult);
+  updatePlayers(state.players);
+  setGameComplete(state.gameResult, state.word);
 });
 
 socket.on("update-game", (state) => {
-  console.log(`update-game: ${state}`);
+  console.log(state);
   
   updateWord(state.word);
   updateWrongGuesses(state.wrongGuesses);
-  checkGameComplete(state.gameResult);
+  updatePlayers(state.players);
+  setGameComplete(state.gameResult, state.word);
 });
 
 function setupWord(wordLength) {
@@ -46,6 +48,14 @@ function updateWrongGuesses(wrongLettersArray) {
   wrongGuesses.innerHTML = "";
   for (var i = 0; i < wrongLettersArray.length; i++) {
     wrongGuesses.innerHTML += `<p id="wrong-letter-${i}" class="game-letter">${wrongLettersArray[i]}</p>`;
+  }
+}
+
+function updatePlayers(players) {
+  const wrongGuesses = document.getElementById("game-players-container");
+  wrongGuesses.innerHTML = "";
+  for (var i = 0; i < players.length; i++) {
+    wrongGuesses.innerHTML += `<p id="player-${i}" class="player">${players[i]}</p>`;
   }
 }
 
@@ -72,8 +82,10 @@ function newGame(word) {
   socket.emit("new-game", word);
 }
 
-function checkGameComplete(result) {
-  document.getElementById("game-status-result").textContent = result ? "Complete" : "In Progress";
+function setGameComplete(result, word) {
+  if (word.length > 0) {
+    document.getElementById("game-status-result").textContent = result ? "Complete" : "In Progress";
+  }
 }
 
 function isGameComplete() {

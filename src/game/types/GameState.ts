@@ -8,4 +8,5 @@ export type GameStatePublic = {
   word: Array<string>;
   wrongGuesses: Array<string>;
   gameResult: boolean;
+  players: string[];
 };

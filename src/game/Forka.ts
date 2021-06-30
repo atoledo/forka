@@ -2,13 +2,6 @@ import { GameState } from "./types/GameState";
 import { GameStateResponse } from "./types/GameStateResponse";
 import LetterGuessService from "./LetterGuessService";
 
-const emptyGamePublic = {
-  length: 0,
-  word: [],
-  wrongGuesses: [],
-  gameResult: false,
-};
-
 export default class Forka {
   private letterGuessService: LetterGuessService;
   public state: GameState;
@@ -22,11 +15,26 @@ export default class Forka {
         word: [],
         wrongGuesses: [],
         gameResult: false,
+        players: [],
       },
     };
   }
 
-  generateGame(selectedWord: string) {
+  addPlayer(playerId: string): GameStateResponse {
+    this.state.public.players.push(playerId);
+    return { ...this.state.public, actionResult: null };
+  }
+
+  removePlayer(playerId: string): GameStateResponse {
+    console.log(`Removing player: ${playerId}`);
+    this.state.public.players = this.state.public.players.filter(
+      (item) => item !== playerId
+    );
+    console.log(this.state.public.players);
+    return { ...this.state.public, actionResult: null };
+  }
+
+  generateGame(selectedWord: string): GameStateResponse {
     const len = selectedWord.length;
 
     this.state.selectedWord = selectedWord;
@@ -35,11 +43,7 @@ export default class Forka {
     this.state.public.wrongGuesses = [];
     this.state.public.gameResult = false;
 
-    return this.state.public;
-  }
-
-  isGameInitialized(): boolean {
-    return this.state.selectedWord.length === 0;
+    return { ...this.state.public, actionResult: null };
   }
 
   guessLetter(letter: string): GameStateResponse {
@@ -54,6 +58,7 @@ export default class Forka {
           word: [],
           wrongGuesses: [],
           gameResult: false,
+          players: [],
         },
         actionResult: false,
       };
@@ -89,5 +94,9 @@ export default class Forka {
     );
 
     return { ...this.state.public, actionResult: actionResult };
+  }
+
+  private isGameInitialized(): boolean {
+    return this.state.selectedWord.length === 0;
   }
 }

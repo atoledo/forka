@@ -9,7 +9,7 @@
     <script type="module" src="game.js"></script>
   </head>
   <body>
-    <div id="game">
+    <div id="game-main-container">
       <div id="game-answer-container" class="game-container">
         <div id="game-forca-img">
           <img src="forca.png" />
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div id="game-wrong-guess-container" class="game-container">
-        <span id="wrong-label">Wrong guesses:</span>
+        <span id="wrong-label" class="subsection-label">Wrong guesses:</span>
         <div id="wrong-guesses" class="contaier-margin">
           <!-- Dynamically inserted via game -->
         </div>
@@ -37,6 +37,12 @@
           <input id="new-game-text" type="text" />
           <button id="new-game-btn">New Game</button>
         </div>
+      </div>
+    </div>
+    <div id="game-sidebar-container">
+      <span id="palyers-label" class="subsection-label">Players:</span>
+      <div id="game-players-container">
+        <!-- Dynamically inserted via game -->
       </div>
     </div>
   </body>

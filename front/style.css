@@ -1,3 +1,10 @@
+#game-main-container {
+  float: left;
+  width: 70%;
+}
+/* #game-sidebar-container {
+  width: 30%;
+} */
 .game-container {
   clear: both;
   overflow: auto;
@@ -26,6 +33,8 @@
 }
 #wrong-label {
   float: left;
+}
+.subsection-label {
   font-size: 28px;
   font-weight: bold;
 }
