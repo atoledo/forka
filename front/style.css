@@ -1,0 +1,31 @@
+.game-container {
+  clear: both;
+  overflow: auto;
+}
+#game-forca-img {
+  float: left;
+}
+#game-forca-img img{
+  height: 100px;
+}
+.contaier-margin {
+  margin: 0 10px 0 0;
+}
+#wrong-guesses {
+  display: inline-block;
+  margin-left: 30px;
+}
+.game-letter {
+  color: gray;
+  float: left;
+  font-size: 28px;
+  margin: 0 10px 0 0;
+}
+#game-wrong-guess-container {
+  margin-top: 30px;
+}
+#wrong-label {
+  float: left;
+  font-size: 28px;
+  font-weight: bold;
+}

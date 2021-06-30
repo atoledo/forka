@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ForKa</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script type="module">
+      const wordLength = 6;
+      const word = [
+        "b",
+        "a",
+        "n",
+        "a",
+        "n",
+        "a"
+      ];
+
+      const gameWord = document.getElementById("game-word");
+
+      for (let i = 0; i < wordLength; i++) {
+        gameWord.innerHTML += `<p id="game-letter-${i}" class="game-letter">_</p>`;
+      }
+
+      setTimeout(() => {
+        for (var i = 0; i < word.length; i++) {
+          document.getElementById(`game-letter-${i}`).textContent = word[i];
+        }
+      }, 2000)
+
+      setTimeout(() => {
+        const wrongGuesses = document.getElementById("wrong-guesses");
+        wrongGuesses.innerHTML += `<p id="wrong-letter-0" class="game-letter">z</p>`;
+        wrongGuesses.innerHTML += `<p id="wrong-letter-1" class="game-letter">p</p>`;
+      }, 3000)
+    </script>
+  </head>
+  <body>
+    <div id="game">
+      <div id="game-answer-container" class="game-container">
+        <div id="game-forca-img">
+          <img src="forca.png" />
+        </div>
+        <div id="game-word" class="contaier-margin">
+          <!-- Dynamically inserted via game -->
+        </div>
+      </div>
+      <div id="game-wrong-guess-container" class="game-container">
+        <span id="wrong-label">Wrong guesses:</span>
+        <div id="wrong-guesses" class="contaier-margin">
+          <!-- Dynamically inserted via game -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
