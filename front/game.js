@@ -1,35 +1,31 @@
+import createKeyboardListener from './keybinds.js'
+
 const socket = io("http://localhost:3000");
+const keyboardListener = createKeyboardListener(document)
 const gameWord = document.getElementById("game-word");
-const maxAttempts = 10;
+
+keyboardListener.setupBtn("guess-letter-btn", "guess-letter-text", guessLetter);
+keyboardListener.setupBtn("new-game-btn", "new-game-text", newGame);
 
 socket.on('connect', () => {
   console.log(`Socket ID: ${socket.id}`)
 });
 
 socket.on('setup', (state) => {  
-  const wordLength = state.length;
-  const result = state.gameResult;
-  
-  setupWord(wordLength);
-  checkGameComplete(result);
+  console.log(`setup: ${state}`);
+
+  setupWord(state.length);
+  updateWrongGuesses(state.wrongGuesses);
+  checkGameComplete(state.gameResult);
 });
 
 socket.on("update-game", (state) => {
-  console.log(state);
+  console.log(`update-game: ${state}`);
   
   updateWord(state.word);
   updateWrongGuesses(state.wrongGuesses);
-  checkGameComplete( state.gameResult);
+  checkGameComplete(state.gameResult);
 });
-
-// const word = [
-//   "b",
-//   "a",
-//   "n",
-//   "a",
-//   "n",
-//   "a"
-// ];
 
 function setupWord(wordLength) {
   gameWord.innerHTML = "";
@@ -54,10 +50,25 @@ function updateWrongGuesses(wrongLettersArray) {
 }
 
 function guessLetter(letter) {
+  if (isGameComplete()) {
+    alert("Game is already complete! Please start a new game.");
+    return;
+  }
+
   socket.emit("guess-letter", letter);
 }
 
 function newGame(word) {
+  if (word.length <= 0) {
+    alert("Please enter a valid word!");
+    return;
+  }
+
+  if (!isGameComplete()) {
+    alert("Game not complete yet!");
+    return;
+  }
+
   socket.emit("new-game", word);
 }
 
@@ -65,11 +76,6 @@ function checkGameComplete(result) {
   document.getElementById("game-status-result").textContent = result ? "Complete" : "In Progress";
 }
 
-window.guessLetter = guessLetter;
-window.newGame = newGame;
-
-// setTimeout(() => {
-//   const wrongGuesses = document.getElementById("wrong-guesses");
-//   wrongGuesses.innerHTML += `<p id="wrong-letter-0" class="game-letter">z</p>`;
-//   wrongGuesses.innerHTML += `<p id="wrong-letter-1" class="game-letter">p</p>`;
-// }, 3000)
+function isGameComplete() {
+  return document.getElementById("game-status-result").textContent === "In Progress" ? false : true;
+}

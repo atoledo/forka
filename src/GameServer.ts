@@ -1,4 +1,3 @@
-import * as SocketIO from "socket.io";
 import Forka from "./game/Forka";
 
 export default class GameServer {
