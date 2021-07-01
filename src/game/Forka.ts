@@ -30,14 +30,13 @@ export default class Forka {
     this.state.public.players = this.state.public.players.filter(
       (item) => item !== playerId
     );
-    console.log(this.state.public.players);
     return { ...this.state.public, actionResult: null };
   }
 
   generateGame(selectedWord: string): GameStateResponse {
     const len = selectedWord.length;
 
-    this.state.selectedWord = selectedWord;
+    this.state.selectedWord = selectedWord.toLowerCase();
     this.state.public.length = len;
     this.state.public.word = new Array<string>(len);
     this.state.public.wrongGuesses = [];
@@ -83,10 +82,6 @@ export default class Forka {
           letter
         )
       : this.letterGuessService.updateWrongGuess(this.state.public, letter);
-
-    indexesFound.forEach((item) => {
-      this.state.public.word[item] = letter;
-    });
 
     this.state.public.gameResult = this.letterGuessService.isAllLettersFound(
       this.state.public.word,

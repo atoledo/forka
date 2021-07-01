@@ -21,23 +21,25 @@ export default class GameServer {
       const state = this.forka.addPlayer(playerId);
 
       socket.emit("setup", state);
-
-      // TODO Add emit to all players. Use observer pattern
+      socket.broadcast.emit("setup", state);
 
       socket.on("guess-letter", (letter: string) => {
         const state = this.forka.guessLetter(letter.toLowerCase());
         socket.emit("update-game", state);
+        socket.broadcast.emit("update-game", state);
       });
 
       socket.on("new-game", (word: string) => {
         const state = this.forka.generateGame(word);
         socket.emit("setup", state);
+        socket.broadcast.emit("setup", state);
       });
 
       socket.on("disconnect", () => {
         console.log(`Player disconnected: ${playerId}`);
         const state = this.forka.removePlayer(playerId);
         socket.emit("setup", state);
+        socket.broadcast.emit("setup", state);
       });
     });
   }

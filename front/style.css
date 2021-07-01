@@ -18,13 +18,16 @@
 .contaier-margin {
   margin: 0 10px 0 0;
 }
-#wrong-guesses {
+#wrong-guesses,
+#game-status-result {
   display: inline-block;
   margin-left: 30px;
 }
 .game-letter {
-  color: gray;
   float: left;
+}
+p {
+  color: gray;
   font-size: 28px;
   margin: 0 10px 0 0;
 }
@@ -34,7 +37,17 @@
 #wrong-label {
   float: left;
 }
+#game-status-label {
+  float: left;
+}
 .subsection-label {
   font-size: 28px;
   font-weight: bold;
+}
+.active-player {
+  font-weight: bold;
+  color: blue;
+}
+.hidden {
+  display: none;
 }
