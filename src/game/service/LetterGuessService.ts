@@ -1,4 +1,4 @@
-import { GameStatePublic } from "./types/GameState";
+import { GameStatePublic } from "../types/GameState";
 
 export default class LetterGuessService {
   public findLetter(letter: string, word: string): number[] {

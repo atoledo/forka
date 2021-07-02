@@ -24,7 +24,7 @@ export default class GameServer {
       socket.broadcast.emit("setup", state);
 
       socket.on("guess-letter", (letter: string) => {
-        const state = this.forka.guessLetter(letter.toLowerCase());
+        const state = this.forka.guessLetter(playerId, letter.toLowerCase());
         socket.emit("update-game", state);
         socket.broadcast.emit("update-game", state);
       });

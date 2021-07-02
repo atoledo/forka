@@ -1,3 +1,5 @@
+import { Player } from "../types/Player";
+
 export type GameState = {
   selectedWord: string;
   public: GameStatePublic;
@@ -8,5 +10,5 @@ export type GameStatePublic = {
   word: Array<string>;
   wrongGuesses: Array<string>;
   gameResult: boolean;
-  players: string[];
+  players: Player[];
 };

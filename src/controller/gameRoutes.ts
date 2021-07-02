@@ -11,7 +11,11 @@ gameRoutes.get("/", (_: Request, res: Response) => {
 
 gameRoutes.post("/guess/:letter", (req: Request, res: Response) => {
   const { letter } = req.params;
-  return res.json(forka.guessLetter(letter));
+  let username = req.get("username");
+  if (typeof username === "undefined") {
+    username = "";
+  }
+  return res.json(forka.guessLetter(username, letter));
 });
 
 export { gameRoutes };

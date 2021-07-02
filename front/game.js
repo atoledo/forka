@@ -66,8 +66,8 @@ function updatePlayers(activePlayer, players) {
   const wrongGuesses = document.getElementById("game-players-container");
   wrongGuesses.innerHTML = "";
   for (var i = 0; i < players.length; i++) {
-    let activePlayerClass = players[i] === activePlayer ? " active-player" : "";
-    wrongGuesses.innerHTML += `<p id="player-${i}" class="player${activePlayerClass}">${players[i]}</p>`;
+    let activePlayerClass = players[i].username === activePlayer ? " active-player" : "";
+    wrongGuesses.innerHTML += `<p id="player-${i}" class="player${activePlayerClass}">${players[i].username} - ${players[i].points}</p>`;
   }
 }
 
